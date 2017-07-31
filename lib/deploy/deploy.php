@@ -1,7 +1,5 @@
 <?php
 
-require_once('./deploy-config.php');
-
 /**
 * Unzip the source_file in the destination dir
 *
@@ -85,6 +83,7 @@ function info($string) {
 }
 
 function dbLoad($sqlFile) {
+    require_once('./deploy-config.php');
     try {
         $request = (object) array(
 			'hostname' => DB_HOST,

@@ -1,0 +1,4 @@
+/node_modules
+/cfg/environments.js
+/dist
+/dist.zip

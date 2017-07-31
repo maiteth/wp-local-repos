@@ -1,0 +1,120 @@
+module.exports = {
+	// all deployment stuff (for gulp config and gulp deploy)
+	deploy: {
+		// deployment parameters for gulp deploy.
+
+		// default: put the key of the default deployment.
+		default: 'toto',
+		toto: {
+			htaccess: {
+				rewriteBase: 'xxxx',
+			},
+			mysql: {
+				database: 'xxxx',
+				username: 'xxxx',
+				password: 'xxxx',
+				hostname: 'xxxx',
+				prefix: 'xxxx',
+			},
+			ftp: {
+				host: 'xxxx',
+				user: 'xxxx',
+				pass: 'xxxx',
+				remotePath: 'xxxx',
+			},
+			url: 'http://xxxx/'
+		},
+	},
+	// Config for development or local installation
+	dev: {
+		// default: put the key of the default development settings.
+		default: 'myDefaultDev',
+		// dev platform with express
+		myDefaultDev: {
+			// The proxy URL is the adress of the XAMPP Apache server project alias URL.
+			// most of the time it should be http://localhost/logistic/app/ws/
+			proxyHtml: 'http://localhost/logistic/app/ws/',
+			ws: {
+				// All the config parameters the web services requires.
+				appName: 'My Beautiful App',
+				// The mySQL database parameter
+				host: 'localhost',
+				// The default MySQL port is 3306
+				port: '3306',
+				// Check the config of your database to get the proper user name
+				user: 'root',
+				// the MySQL password (sometimes it is an empty string)
+				password: '',
+				// The MySQL database name to use
+				database: 'logistic',
+				// All the tables in the database will be prefixed by the following
+				// Most of the time it will be 'lg_'
+				prefix: 'lg_',
+
+				// For the social login buttons we need to be registered on Google and Facebook.
+				// Check with Google and Facebook how to do.
+				oauth2GoogleClientId: 'xxxxx',
+				oauth2GoogleClientSecret: 'xxxxx',
+
+				oauth2FacebookClientId: 'xxxxx',
+				oauth2FacebookClientSecret: 'xxxxx',
+
+				// The website can send mail.
+				// You need to configure an smtp server
+
+				smtpServerHost: 'xxxxx',
+				smtpServerPort: 'xxxxx',
+				smtpSecure: 'tls',
+				smtpServerUsername: 'xxxxx',
+				smtpServerPassword: 'xxxxx',
+				smtpServerFrom: 'xxxxx',
+
+				// The website use the Google Map API so we need to register a Google key.
+				routeGoogleAPIKey: 'xxxxx',
+			}
+		},
+		myOtherDev: {
+			// The proxy URL is the adress of the XAMPP Apache server project alias URL.
+			// most of the time it should be http://localhost/logistic/app/ws/
+			proxyHtml: 'http://localhost/logistic/app/ws/',
+			ws: {
+				// All the config parameters the web services requires.
+				appName: 'My Beautiful App',
+				// The mySQL database parameter
+				host: 'localhost',
+				// The default MySQL port is 3306
+				port: '3306',
+				// Check the config of your database to get the proper user name
+				user: 'root',
+				// the MySQL password (sometimes it is an empty string)
+				password: '',
+				// The MySQL database name to use
+				database: 'logistic',
+				// All the tables in the database will be prefixed by the following
+				// Most of the time it will be 'lg_'
+				prefix: 'lg_',
+
+				// For the social login buttons we need to be registered on Google and Facebook.
+				// Check with Google and Facebook how to do.
+				oauth2GoogleClientId: 'xxxxx',
+				oauth2GoogleClientSecret: 'xxxxx',
+
+				oauth2FacebookClientId: 'xxxxx',
+				oauth2FacebookClientSecret: 'xxxxx',
+
+				// The website can send mail.
+				// You need to configure an smtp server
+
+				smtpServerHost: 'xxxxx',
+				smtpServerPort: 'xxxxx',
+				smtpSecure: 'tls',
+				smtpServerUsername: 'xxxxx',
+				smtpServerPassword: 'xxxxx',
+				smtpServerFrom: 'xxxxx',
+
+				// The website use the Google Map API so we need to register a Google key.
+				routeGoogleAPIKey: 'xxxxx',
+			}
+		},
+	},
+};

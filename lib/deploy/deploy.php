@@ -76,31 +76,30 @@ function create_dirs($path) {
     }
 }
 
-function debug($string) {
-    echo 'debug: ' . $string . '\n';
+function info($string) {
+    echo 'info: ' . $string . "<br>";
+    flush();
+    ob_flush();
 }
 
 function dbLoad($sqlFile) {
-    require_once( dirname( __FILE__ ) . '/wp-config.php' );
+    require_once('./deploy-config.php');
     try {
-        $request = array(
+        $request = (object) array(
 			'hostname' => DB_HOST,
 			'username' => DB_USER,
 			'password' => DB_PASSWORD,
 			'databaseName' => DB_NAME,
 		);
-        debug("Starting to install: " . "mysql:host=$request->hostname");
         $db = new PDO("mysql:host={$request->hostname}", $request->username, $request->password);
         $sql = <<<EOF
 CREATE DATABASE IF NOT EXISTS {$request->databaseName} DEFAULT CHARACTER SET = 'utf8';
 USE {$request->databaseName};
 EOF;
 
-        debug($sql);
         if ($db->exec($sql) === FALSE) {
             throw new Exception("DB creation: " . sprint_r($db->errorInfo()));
         };
-        debug("sql done");
         $db = new PDO("mysql:host={$request->hostname};dbname={$request->databaseName}", $request->username, $request->password);
 
         $sql = file_get_contents($sqlFile);
@@ -114,15 +113,18 @@ EOF;
     }
 }
 
-if (file_exists('dist.zip')) {
-    unzip('dist.zip', './', false, true);
-    
-    dbLoad('database.sql');
-	// unlink('./dist.zip');
-	unlink('./unzip.php');
-    echo 'Successfully unzipped.';
-} else {
-    echo 'File does not exist.';
-}
+header( 'Content-type: text/html; charset=utf-8' );
+header('Content-Encoding: none');
 
-?>
+if (!file_exists('dist.zip')) {
+    exit('File does not exist.');
+}
+info('unzipping...');
+unzip('dist.zip', './', false, true);
+info('configuring database...');
+dbLoad('database.sql');
+info('cleaning...');
+// unlink('./dist.zip');
+unlink('./deploy.php');
+unlink('./deploy-config.php');
+info('Successfully deployed.');

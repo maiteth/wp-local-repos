@@ -78,8 +78,10 @@ function create_dirs($path) {
     }
 }
 
-function debug($string) {
-    echo 'debug: ' . $string . "\n";
+function info($string) {
+    echo 'info: ' . $string . "<br>";
+    flush();
+    ob_flush();
 }
 
 function dbLoad($sqlFile) {
@@ -90,18 +92,15 @@ function dbLoad($sqlFile) {
 			'password' => DB_PASSWORD,
 			'databaseName' => DB_NAME,
 		);
-        debug("Starting to install: " . $request->hostname);
         $db = new PDO("mysql:host={$request->hostname}", $request->username, $request->password);
         $sql = <<<EOF
 CREATE DATABASE IF NOT EXISTS {$request->databaseName} DEFAULT CHARACTER SET = 'utf8';
 USE {$request->databaseName};
 EOF;
 
-        debug($sql);
         if ($db->exec($sql) === FALSE) {
             throw new Exception("DB creation: " . sprint_r($db->errorInfo()));
         };
-        debug("sql done");
         $db = new PDO("mysql:host={$request->hostname};dbname={$request->databaseName}", $request->username, $request->password);
 
         $sql = file_get_contents($sqlFile);
@@ -115,12 +114,18 @@ EOF;
     }
 }
 
+header( 'Content-type: text/html; charset=utf-8' );
+header('Content-Encoding: none');
+
 if (!file_exists('dist.zip')) {
     exit('File does not exist.');
 }
+info('unzipping...');
 unzip('dist.zip', './', false, true);
-
+info('configuring database...');
 dbLoad('database.sql');
+info('cleaning...');
 // unlink('./dist.zip');
 unlink('./deploy.php');
-echo 'Successfully unzipped.';
+unlink('./deploy-config.php');
+info('Successfully deployed.');

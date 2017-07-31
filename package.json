@@ -1,0 +1,30 @@
+{
+  "name": "wp-local-repos",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db-export": "node utils/db-export.js",
+    "db-import": "node utils/db-import.js",
+    "gulp": "gulp"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-ejs": "^3.0.1",
+    "gulp-ftp": "^1.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.6.1",
+    "gulp-util": "^3.0.8",
+    "gulp-zip": "^4.0.0",
+    "replace-in-file": "^2.5.3",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1",
+    "run-sequence": "^2.1.0"
+  }
+}

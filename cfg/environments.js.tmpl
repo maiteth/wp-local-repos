@@ -1,15 +1,19 @@
 module.exports = {
-	// all deployment stuff (for gulp config and gulp deploy)
+	// all deployment stuff (for gulp deploy)
+	// all the examples considere you are deploying on:
+	// http://www.yourdomain.tld/hello/world
 	deploy: {
 		// deployment parameters for gulp deploy.
 
 		// default: put the key of the default deployment.
-		default: 'toto',
-		toto: {
+		default: 'deploy1',
+		deploy1: {
 			htaccess: {
-				// the url should end with a slash (/):
+				// the url should end with a slash (/), ie:
+				// /hello/world/
 				rewriteBase: '/xxxx/xxxx/',
 			},
+			// the mysql of your webhoster on http://www.yourdomain.tld
 			mysql: {
 				database: 'xxxx',
 				username: 'xxxx',
@@ -17,16 +21,17 @@ module.exports = {
 				hostname: 'xxxx',
 				prefix: 'xxxx_',
 			},
+			// the FTP of your webhoster on http://www.yourdomain.tld
 			ftp: {
 				host: 'ftp.xxxx.xxx',
 				user: 'xxxx',
 				pass: 'xxxx',
 				// the remotePath should not end with a slash (/), ie:
 				// www/hello/world
-				remotePath: 'www/xxxx/xxxx',
+				remotePath: 'xxx/xxxx/xxxx',
 			},
 			// the url should not end with a slash (/), ie:
-			// http://toto.org/hello/world
+			// http://www.yourdomain.tld/hello/world
 			url: 'http://xxxx.xxx/xxxx/xxxx'
 		},
 	},

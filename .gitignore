@@ -2,3 +2,5 @@
 /cfg/environments.js
 /dist
 /dist.zip
+/app/wp-config.php
+/app/.htaccess

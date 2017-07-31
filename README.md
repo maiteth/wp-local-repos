@@ -37,7 +37,7 @@ On a XAMPP windows default install `httpd.conf` is located  under `C:\xampp\apac
     Allow from all
 	Require all granted
 </Directory>
-Alias /wp-local-repos "D:/Replace/by/the/path/your/project"
+Alias /wp-local-repos "D:/Replace/by/the/path/your/project/wp-local-repos"
 ```
 
 ## Create the `environment.js` file
@@ -52,9 +52,19 @@ Customize the newly created **environments.js** file.
 
 You will find the value documented in the file.
 
+
+```
+$ gulp config
+```
+
 ## Start the server
 
 Start the XAMPP server (both Apache and MySQL)
+
+
+# Install Wordpress
+
+Go to your website and follow the steps displayed on your screen.
 
 # Deployment to production environment
 
@@ -69,12 +79,16 @@ $ cd wp-local-repos
 $ gulp rebuild
 ```
 
-
 ## Deployment
 
 ```
 $ gulp deploy
 ```
+
+## Database
+
+To export your database, run `npm run db-export`.
+To import your database, run `npm run db-import`.
 
 ### Note 
 

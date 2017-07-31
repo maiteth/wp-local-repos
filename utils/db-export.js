@@ -1,5 +1,7 @@
 const exec = require('child_process').exec;
 const replace = require('replace-in-file');
+const cfgUtils = require('../lib/utils.js');
+const devEnv = cfgUtils.getEnv('dev');
 
 function next(callback) {
     return function report(error, stdout, stderr) {
@@ -7,6 +9,7 @@ function next(callback) {
         console.error('stderr', stderr);
         if (error !== null) {
             console.log('exec error: ', error);
+            return;
         }
         if (callback) {
             callback();
@@ -15,9 +18,12 @@ function next(callback) {
 }
 
 
-const user = 'maiteth';
-exec(`mysqldump -u ${user} --password=1234 wp-local-repos -r sql/wp-local-repos.sql`, next(function () {
-    console.log('c est fini');
+const user = devEnv.mysql.username;
+const password = devEnv.mysql.password;
+const hostname = devEnv.mysql.hostname;
+const database = devEnv.mysql.database;
+exec(`mysqldump -u ${user} --password=${password} -h ${hostname} ${database} -r sql/wp-local-repos.sql`, next(function () {
+    console.log('Successful.');
     const options = {
         //Single file or glob 
         files: 'sql/wp-local-repos.sql',

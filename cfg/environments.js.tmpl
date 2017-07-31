@@ -35,4 +35,21 @@ module.exports = {
 			url: 'http://xxxx.xxx/xxxx/xxxx'
 		},
 	},
+	dev: {
+		default: 'dev1',
+		dev1: {
+			htaccess: {
+				rewriteBase: '/wp-local-repos/app/',
+			},
+			// the mysql of your local dev environment
+			// if you install by default you should have the settings below
+			mysql: {
+				database: 'wp-local-repos',
+				username: 'root',
+				password: '',
+				hostname: 'localhost',
+				prefix: 'wp_',
+			},
+		},
+	}
 };

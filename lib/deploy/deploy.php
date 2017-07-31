@@ -115,15 +115,12 @@ EOF;
     }
 }
 
-if (file_exists('dist.zip')) {
-    unzip('dist.zip', './', false, true);
-    
-    dbLoad('database.sql');
-	// unlink('./dist.zip');
-	unlink('./unzip.php');
-    echo 'Successfully unzipped.';
-} else {
-    echo 'File does not exist.';
+if (!file_exists('dist.zip')) {
+    exit('File does not exist.');
 }
+unzip('dist.zip', './', false, true);
 
-?>
+dbLoad('database.sql');
+// unlink('./dist.zip');
+unlink('./deploy.php');
+echo 'Successfully unzipped.';

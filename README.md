@@ -37,7 +37,7 @@ On a XAMPP windows default install `httpd.conf` is located  under `C:\xampp\apac
     Allow from all
 	Require all granted
 </Directory>
-Alias /wp-local-repos "D:/Replace/by/the/path/your/project"
+Alias /wp-local-repos "D:/Replace/by/the/path/your/project/wp-local-repos"
 ```
 
 ## Create the `environment.js` file

@@ -1,5 +1,7 @@
 <?php
 
+require_once('./deploy-config.php');
+
 /**
 * Unzip the source_file in the destination dir
 *
@@ -77,19 +79,18 @@ function create_dirs($path) {
 }
 
 function debug($string) {
-    echo 'debug: ' . $string . '\n';
+    echo 'debug: ' . $string . "\n";
 }
 
 function dbLoad($sqlFile) {
-    require_once( dirname( __FILE__ ) . '/wp-config.php' );
     try {
-        $request = array(
+        $request = (object) array(
 			'hostname' => DB_HOST,
 			'username' => DB_USER,
 			'password' => DB_PASSWORD,
 			'databaseName' => DB_NAME,
 		);
-        debug("Starting to install: " . "mysql:host=$request->hostname");
+        debug("Starting to install: " . $request->hostname);
         $db = new PDO("mysql:host={$request->hostname}", $request->username, $request->password);
         $sql = <<<EOF
 CREATE DATABASE IF NOT EXISTS {$request->databaseName} DEFAULT CHARACTER SET = 'utf8';

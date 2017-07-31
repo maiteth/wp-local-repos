@@ -30,11 +30,11 @@ const path = {
 	zipSrc: ['dist/**/*', 'dist/**/.*'],
 	zip: 'dist.zip',
 	htaccess: ['cfg/.htaccess.tmpl'],
-	wpconfig: ['cfg/wp-config.php.tmpl'],
+	wpConfig: ['cfg/wp-config.php.tmpl'],
+	deployConfig: ['cfg/deploy-config.php.tmpl'],
 	sql: ['sql/wp-local-repos.sql'],
 	resources: ['app/**/*', 'app/**/.*', '!app/.htaccess', '!app/wp-config.php'],
-	// ftp: ['lib/deploy/unzip.php'],
-	ftp: ['dist.zip', 'lib/deploy/unzip.php'],
+	ftp: ['dist.zip', 'lib/deploy/deploy.php'],
 	undeploy: 'lib/deploy/remove.php',
 };
 
@@ -67,9 +67,17 @@ gulp.task('htaccess', function () {
 
 gulp.task('wp-config', function () {
 	const deployEnv = cfgUtils.getEnv('deploy');
-	return gulp.src(path.wpconfig)
+	return gulp.src(path.wpConfig)
 		.pipe(ejs(deployEnv.mysql))
 		.pipe(rename('wp-config.php'))
+		.pipe(gulp.dest(path.dist));
+});
+
+gulp.task('deploy-config', function () {
+	const deployEnv = cfgUtils.getEnv('deploy');
+	return gulp.src(path.deployConfig)
+		.pipe(ejs(deployEnv.mysql))
+		.pipe(rename('deploy-config.php'))
 		.pipe(gulp.dest(path.dist));
 });
 
@@ -77,16 +85,20 @@ gulp.task('sql', function (cb) {
 	const deployEnv = cfgUtils.getEnv('deploy');
 	const prefix = deployEnv.mysql.prefix;
 	console.log('prefix', prefix);
+	const localUrl = 'http://localhost/wp-local-repos/app';
+	const deployUrl = deployEnv.url;
+	const regexp = new RegExp(`${localUrl}`,'g');
 	return gulp.src(path.sql)
 		.pipe(replace(/^(.*(?:TABLE|table|Table|INSERT INTO).*?)wp_(.*)$/mg, `$1${prefix}$2`))
 		.pipe(replace(/^(\(\d+,\d+,')wp_(.*)$/mg, `$1${prefix}$2`))
 		.pipe(replace(/^(\(\d+,')wp_(.*)$/mg, `$1${prefix}$2`))
+		.pipe(replace(regexp, `${deployUrl}`))
 		.pipe(rename('database.sql'))
 		.pipe(gulp.dest(path.dist));
 });
 
 gulp.task('build', function () {
-	runSequence(['resources', 'htaccess', 'wp-config', 'sql']);
+	runSequence(['resources', 'htaccess', 'wp-config', 'deploy-config', 'sql']);
 });
 
 gulp.task('rebuild', function () {
@@ -112,7 +124,7 @@ gulp.task('deploy:ftp', function () {
 
 gulp.task('deploy:unzip', function (callback) {
 	const deployEnv = cfgUtils.getEnv('deploy');
-	rp(deployEnv.url + 'unzip.php')
+	rp(deployEnv.url + '/deploy.php')
 		.then(function (htmlString) {
 			console.log('htmlString', htmlString);
 			callback();
@@ -141,7 +153,7 @@ gulp.task('undeploy:ftp', function() {
 
 gulp.task('undeploy:remove', function(callback) {
 	const deployEnv = cfgUtils.getEnv('deploy');
-	rp(deployEnv.url + 'remove.php')
+	rp(deployEnv.url + '/remove.php')
 		.then(function(htmlString) {
 			console.log('htmlString', htmlString);
 			callback();
@@ -155,25 +167,3 @@ gulp.task('undeploy:remove', function(callback) {
 gulp.task('undeploy', function() {
 	runSequence('undeploy:ftp', 'undeploy:remove');
 });
-
-// gulp.task('config', function(callback) {
-// 	const devEnv = cfgUtils.getEnv('dev');
-// 	let svg;
-// 	globAsync('app/img/**/*.svg').then(function(files) {
-// 		svg = { svgs: files.map((f) => f.replace(/^app/, '')) };
-// 		return consolidate.ejs('./cfg/config.ws.tmpl', devEnv.ws);
-// 	}).then(function(str) {
-// 		return fs.writeFileAsync('./app/ws/include/suggested.config.php', str);
-// 	}).then(function() {
-// 		console.log('./app/ws/include/suggested.config.php saved.');
-// 		return consolidate.ejs('./cfg/svg.tmpl', svg);
-// 	}).then(function(str) {
-// 		return fs.writeFileAsync('./app/modules/technic/lg-widget/tmpl/lg-image.html', str);
-// 	}).then(function() {
-// 		console.log('./app/modules/technic/lg-widget/tmpl/lg-image.html saved.');
-// 		callback();
-// 	}).catch(function(error) {
-// 		console.error('error', error);
-// 	});
-
-// });

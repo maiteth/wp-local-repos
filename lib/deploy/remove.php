@@ -1,7 +1,8 @@
 <?php
 
 function recursiveRemoveDirectory($directory) {
-	foreach(glob("{$directory}/*") as $file) {
+	foreach(glob($directory . '/{,.}[!.,!..]*',GLOB_BRACE) as $file) {
+		echo "file = $file\n";
 		if (is_dir($file)) {
 			recursiveRemoveDirectory($file);
 		} else {
@@ -12,8 +13,7 @@ function recursiveRemoveDirectory($directory) {
 }
 
 function removeAll() {
-	foreach(glob('./' . '{,.}[!.,!..]*',GLOB_MARK|GLOB_BRACE) as $file) {
-		 echo "file = $file\n";
+	foreach(glob('./' . '{,.}[!.,!..]*',GLOB_BRACE) as $file) {
 		if (is_dir($file)) {
 			recursiveRemoveDirectory($file);
 		} else {
@@ -22,9 +22,5 @@ function removeAll() {
 	}
 }
 
-    removeAll();
-    echo "Successfully removed.\n";
-
-
-
-?>
+removeAll();
+echo "Successfully removed.\n";

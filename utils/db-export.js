@@ -31,7 +31,7 @@ exec(`mysqldump -u ${user} --password=${password} -h ${hostname} ${database} -r 
 
         //Replacement to make (string or regex) 
         from: [/\),\(/g, new RegExp(url, 'g'), /^\(3,'blogname','.*','yes'\),$/mg],
-        to: ['),\n(', '<%= url %>', "(3,'blogname','<%= blogname %>','yes')"],
+        to: ['),\n(', '<%= url %>', "(3,'blogname','<%= blogname %>','yes'),"],
     };
     replace(options)
         .then(changedFiles => {

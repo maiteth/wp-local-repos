@@ -10,8 +10,9 @@ const hostname = devEnv.mysql.hostname;
 const database = devEnv.mysql.database;
 
 let contents = fs.readFileSync('sql/wordpress.sql', 'utf8');
+contents = contents.replace(/<%= url %>/g, devEnv.url);
 contents = `
-drop database \`${database}\`;
+drop database if exists \`${database}\`;
 create database \`${database}\`;
 use \`${database}\`;
 ` + contents;

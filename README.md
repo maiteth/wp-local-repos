@@ -60,9 +60,11 @@ $ gulp config
 
 Start the XAMPP server (both Apache and MySQL)
 
+
 # Install Wordpress
 
-Go to your website and follow the steps displayed on your screen.
+Go to your favorite browser and open
+`http://localhost/wp-local-repos/app/`
 
 # Deployment to production environment
 

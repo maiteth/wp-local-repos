@@ -22,11 +22,11 @@ const user = devEnv.mysql.username;
 const password = devEnv.mysql.password;
 const hostname = devEnv.mysql.hostname;
 const database = devEnv.mysql.database;
-exec(`mysqldump -u ${user} --password=${password} -h ${hostname} ${database} -r sql/wp-local-repos.sql`, next(function () {
+exec(`mysqldump -u ${user} --password=${password} -h ${hostname} ${database} -r sql/wordpress.sql`, next(function () {
     console.log('Successful.');
     const options = {
         //Single file or glob 
-        files: 'sql/wp-local-repos.sql',
+        files: 'sql/wordpress.sql',
 
         //Replacement to make (string or regex) 
         from: /\),\(/g,

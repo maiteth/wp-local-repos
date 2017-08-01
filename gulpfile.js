@@ -32,7 +32,7 @@ const path = {
 	htaccess: ['cfg/.htaccess.tmpl'],
 	wpConfig: ['cfg/wp-config.php.tmpl'],
 	deployConfig: ['cfg/deploy-config.php.tmpl'],
-	sql: ['sql/wp-local-repos.sql'],
+	sql: ['sql/wordpress.sql'],
 	resources: ['app/**/*', 'app/**/.*', '!app/.htaccess', '!app/wp-config.php'],
 	ftp: ['dist.zip', 'lib/deploy/deploy.php'],
 	undeploy: 'lib/deploy/remove.php',
@@ -111,9 +111,10 @@ gulp.task('deploy-config', function () {
 
 gulp.task('sql', function (cb) {
 	const deployEnv = cfgUtils.getEnv('deploy');
+	const devEnv = cfgUtils.getEnv('dev');
 	const prefix = deployEnv.mysql.prefix;
 	console.log('prefix', prefix);
-	const localUrl = 'http://localhost/wp-local-repos/app';
+	const localUrl = devEnv.url;
 	const deployUrl = deployEnv.url;
 	const regexp = new RegExp(`${localUrl}`, 'g');
 	return gulp.src(path.sql)

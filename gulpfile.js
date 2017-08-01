@@ -116,12 +116,14 @@ gulp.task('sql', function (cb) {
 	console.log('prefix', prefix);
 	const localUrl = devEnv.url;
 	const deployUrl = deployEnv.url;
+	const blogname = devEnv.blogname;
 	const regexp = /<%= url %>/g;
 	return gulp.src(path.sql)
 		.pipe(replace(/^(.*(?:TABLE|table|Table|INSERT INTO).*?)wp_(.*)$/mg, `$1${prefix}$2`))
 		.pipe(replace(/^(\(\d+,\d+,')wp_(.*)$/mg, `$1${prefix}$2`))
 		.pipe(replace(/^(\(\d+,')wp_(.*)$/mg, `$1${prefix}$2`))
 		.pipe(replace(regexp, `${deployUrl}`))
+		.pipe(replace(/<%= blogname %>/g, `${blogname}`))
 		.pipe(rename('database.sql'))
 		.pipe(gulp.dest(path.dist));
 });

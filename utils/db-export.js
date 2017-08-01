@@ -22,6 +22,7 @@ const user = devEnv.mysql.username;
 const password = devEnv.mysql.password;
 const hostname = devEnv.mysql.hostname;
 const database = devEnv.mysql.database;
+const url = devEnv.url;
 exec(`mysqldump -u ${user} --password=${password} -h ${hostname} ${database} -r sql/wordpress.sql`, next(function () {
     console.log('Successful.');
     const options = {
@@ -29,8 +30,8 @@ exec(`mysqldump -u ${user} --password=${password} -h ${hostname} ${database} -r 
         files: 'sql/wordpress.sql',
 
         //Replacement to make (string or regex) 
-        from: /\),\(/g,
-        to: '),\n(',
+        from: [/\),\(/g, new RegExp(url, 'g'), /^\(3,'blogname','.*','yes'\),$/mg],
+        to: ['),\n(', '<%= url %>', "(3,'blogname','<%= blogname %>','yes'),"],
     };
     replace(options)
         .then(changedFiles => {

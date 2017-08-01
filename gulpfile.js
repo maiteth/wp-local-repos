@@ -116,7 +116,7 @@ gulp.task('sql', function (cb) {
 	console.log('prefix', prefix);
 	const localUrl = devEnv.url;
 	const deployUrl = deployEnv.url;
-	const regexp = new RegExp(`${localUrl}`, 'g');
+	const regexp = /<%= url %>/g;
 	return gulp.src(path.sql)
 		.pipe(replace(/^(.*(?:TABLE|table|Table|INSERT INTO).*?)wp_(.*)$/mg, `$1${prefix}$2`))
 		.pipe(replace(/^(\(\d+,\d+,')wp_(.*)$/mg, `$1${prefix}$2`))

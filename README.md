@@ -52,7 +52,6 @@ Customize the newly created **environments.js** file.
 
 You will find the value documented in the file.
 
-
 ```
 $ gulp config
 ```
@@ -85,7 +84,6 @@ $ gulp rebuild
 ```
 $ gulp deploy
 ```
-
 ## Database
 
 To export your database, run `npm run db-export`.

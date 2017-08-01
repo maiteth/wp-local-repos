@@ -144,7 +144,7 @@ LOCK TABLES `wp_options` WRITE;
 /*!40000 ALTER TABLE `wp_options` DISABLE KEYS */;
 INSERT INTO `wp_options` VALUES (1,'siteurl','<%= url %>','yes'),
 (2,'home','<%= url %>','yes'),
-(3,'blogname','Wp Local Repos','yes'),
+(3,'blogname','<%= blogname %>','yes'),
 (4,'blogdescription','Just another WordPress site','yes'),
 (5,'users_can_register','0','yes'),
 (6,'admin_email','jlguenego@gmail.com','yes'),

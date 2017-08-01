@@ -11,6 +11,7 @@ const database = devEnv.mysql.database;
 
 let contents = fs.readFileSync('sql/wordpress.sql', 'utf8');
 contents = contents.replace(/<%= url %>/g, devEnv.url);
+// contents = contents.replace(/<%= blogname %>/g, devEnv.blogname);
 contents = `
 drop database if exists \`${database}\`;
 create database \`${database}\`;

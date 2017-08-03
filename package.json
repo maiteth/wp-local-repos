@@ -20,12 +20,14 @@
     "gulp-ftp": "^1.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.6.1",
+    "gulp-text-simple": "^0.4.1",
     "gulp-util": "^3.0.8",
     "gulp-zip": "^4.0.0",
     "mysql": "^2.14.0",
     "replace-in-file": "^2.5.3",
     "request": "^2.81.0",
     "request-promise": "^4.2.1",
-    "run-sequence": "^2.1.0"
+    "run-sequence": "^2.1.0",
+    "utf8-length": "0.0.1"
   }
 }

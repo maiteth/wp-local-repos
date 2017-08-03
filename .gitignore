@@ -4,3 +4,4 @@
 /dist.zip
 /app/wp-config.php
 /app/.htaccess
+/app/wp-content/debug.log

@@ -14,6 +14,8 @@ const rp = require('request-promise');
 const gutil = require('gulp-util');
 const ftp = require('gulp-ftp');
 const zip = require('gulp-zip');
+const textTransformation = require('gulp-text-simple');
+const phpUtils = require('./lib/phpUtils.js');
 // const glob = require('glob');
 
 // const Promise = require('bluebird');
@@ -47,7 +49,7 @@ gulp.task('config:htaccess', function () {
 });
 
 gulp.task('config:wp-config', function () {
-	const devEnv = cfgUtils.getEnv('dev');	
+	const devEnv = cfgUtils.getEnv('dev');
 	return gulp.src(path.wpConfig)
 		.pipe(ejs(devEnv.mysql))
 		.pipe(rename('wp-config.php'))
@@ -109,6 +111,8 @@ gulp.task('deploy-config', function () {
 		.pipe(gulp.dest(path.dist));
 });
 
+const phpFixSerialization = textTransformation(phpUtils.fixSerialization);
+
 gulp.task('sql', function (cb) {
 	const deployEnv = cfgUtils.getEnv('deploy');
 	const devEnv = cfgUtils.getEnv('dev');
@@ -124,6 +128,7 @@ gulp.task('sql', function (cb) {
 		.pipe(replace(/^(\(\d+,')wp_(.*)$/mg, `$1${prefix}$2`))
 		.pipe(replace(regexp, `${deployUrl}`))
 		.pipe(replace(/<%= blogname %>/g, `${blogname}`))
+		.pipe(phpFixSerialization())
 		.pipe(rename('database.sql'))
 		.pipe(gulp.dest(path.dist));
 });

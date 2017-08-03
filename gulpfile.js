@@ -128,10 +128,7 @@ gulp.task('sql', function (cb) {
 		.pipe(replace(/^(\(\d+,')wp_(.*)$/mg, `$1${prefix}$2`))
 		.pipe(replace(regexp, `${deployUrl}`))
 		.pipe(replace(/<%= blogname %>/g, `${blogname}`))
-<<<<<<< HEAD
 		.pipe(phpFixSerialization())
-=======
->>>>>>> 75df762f02137aeaef2b00a5a8f0c9b27b8700bb
 		.pipe(rename('database.sql'))
 		.pipe(gulp.dest(path.dist));
 });

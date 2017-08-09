@@ -1,12 +1,14 @@
 const gulp = require('gulp');
+const path = require('path');
 
 gulp.task('default', ['config']);
 
-const path = {
+const repositoryName = path.basename(__dirname);
+console.log('repositoryName', repositoryName);
+
+const pathConfig = {
 	base: 'app',
-	dist: 'dist',
-	zipSrc: ['dist/**/*', 'dist/**/.*'],
-	zip: 'dist.zip',
+	dist: path.resolve(__dirname, `../${repositoryName}-dist`),
 	htaccess: ['cfg/.htaccess.tmpl'],
 	wpConfig: ['cfg/wp-config.php.tmpl'],
 	deployConfig: ['cfg/deploy-config.php.tmpl'],
@@ -16,8 +18,8 @@ const path = {
 	undeploy: 'lib/deploy/remove.php',
 };
 
-require('./gulp/clean.js')(gulp, path);
-require('./gulp/config.js')(gulp, path);
-require('./gulp/build.js')(gulp, path);
-require('./gulp/deploy.js')(gulp, path);
-require('./gulp/undeploy.js')(gulp, path);
+require('./gulp/clean.js')(gulp, pathConfig);
+require('./gulp/config.js')(gulp, pathConfig);
+require('./gulp/build.js')(gulp, pathConfig);
+require('./gulp/deploy.js')(gulp, pathConfig);
+require('./gulp/undeploy.js')(gulp, pathConfig);

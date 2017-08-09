@@ -25,6 +25,7 @@
     "gulp-text-simple": "^0.4.1",
     "gulp-util": "^3.0.8",
     "gulp-zip": "^4.0.0",
+    "mkdirp": "^0.5.1",
     "mysql": "^2.14.0",
     "replace-in-file": "^2.5.3",
     "request": "^2.81.0",

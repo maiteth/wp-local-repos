@@ -1,27 +1,14 @@
 const gulp = require('gulp');
 const ejs = require("gulp-ejs");
-
-
 const replace = require('gulp-replace');
 const rename = require('gulp-rename');
 const runSequence = require('run-sequence');
-const del = require('del');
-// const fs = require('fs');
 const rp = require('request-promise');
-// const consolidate = require('consolidate');
-// const ejs = require('ejs');
-// consolidate.requires.ejs = ejs;
 const gutil = require('gulp-util');
 const ftp = require('gulp-ftp');
 const zip = require('gulp-zip');
 const textTransformation = require('gulp-text-simple');
 const phpUtils = require('./lib/phpUtils.js');
-// const glob = require('glob');
-
-// const Promise = require('bluebird');
-// Promise.promisifyAll(fs);
-// const globAsync = Promise.promisify(glob);
-
 const cfgUtils = require('./lib/utils.js');
 
 gulp.task('default', ['config']);
@@ -39,6 +26,8 @@ const path = {
 	ftp: ['dist.zip', 'lib/deploy/deploy.php'],
 	undeploy: 'lib/deploy/remove.php',
 };
+
+require('./gulp/clean.js')(gulp, path);
 
 gulp.task('config:htaccess', function () {
 	const devEnv = cfgUtils.getEnv('dev');
@@ -62,21 +51,6 @@ gulp.task('config:db-import', function (cb) {
 });
 
 gulp.task('config', ['config:htaccess', 'config:wp-config', 'config:db-import']);
-
-
-// Delete the dist directory
-gulp.task('clean:dist', function () {
-	return del([path.dist]);
-});
-
-gulp.task('clean:zip', function () {
-	return del([path.zip]);
-});
-
-gulp.task('clean', ['clean:dist', 'clean:zip']);
-
-
-
 
 
 

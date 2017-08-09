@@ -11,4 +11,4 @@ module.exports = function (gulp, path) {
 	});
 
 	gulp.task('clean', ['clean:dist', 'clean:zip']);
-}
+};

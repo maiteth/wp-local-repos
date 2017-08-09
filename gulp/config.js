@@ -25,4 +25,4 @@ module.exports = function (gulp, path) {
     });
 
     gulp.task('config', ['config:htaccess', 'config:wp-config', 'config:db-import']);
-}
+};

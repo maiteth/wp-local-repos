@@ -26,21 +26,24 @@ module.exports = function(gulp, pathConfig) {
 
 	gulp.task('build:init', function(cb) {
 		mkdirp.sync(pathConfig.dist);
+		const dir = process.cwd();
 		process.chdir(pathConfig.dist);
 		exec('git init', next(function() {
-			console.log('Successful.');
+			console.log('Init successful.');
+			process.chdir(dir);
 			cb();
 		}));
 	});
 
-	gulp.task('resources', function() {
+	gulp.task('build:resources', function() {
+		console.log('Ressources.', process.cwd());
 		return gulp.src(pathConfig.resources, {
 				base: pathConfig.base
 			})
 			.pipe(gulp.dest(pathConfig.dist));
 	});
 
-	gulp.task('htaccess', function() {
+	gulp.task('build:htaccess', function() {
 		const deployEnv = cfgUtils.getEnv('deploy');
 		return gulp.src(pathConfig.htaccess)
 			.pipe(ejs(deployEnv.htaccess))
@@ -48,7 +51,7 @@ module.exports = function(gulp, pathConfig) {
 			.pipe(gulp.dest(pathConfig.dist));
 	});
 
-	gulp.task('wp-config', function() {
+	gulp.task('build:wp-config', function() {
 		const deployEnv = cfgUtils.getEnv('deploy');
 		return gulp.src(pathConfig.wpConfig)
 			.pipe(ejs(deployEnv.mysql))
@@ -56,7 +59,7 @@ module.exports = function(gulp, pathConfig) {
 			.pipe(gulp.dest(pathConfig.dist));
 	});
 
-	gulp.task('deploy-config', function() {
+	gulp.task('build:deploy-config', function() {
 		const deployEnv = cfgUtils.getEnv('deploy');
 		return gulp.src(pathConfig.deployConfig)
 			.pipe(ejs(deployEnv.mysql))
@@ -66,7 +69,7 @@ module.exports = function(gulp, pathConfig) {
 
 	const phpFixSerialization = textTransformation(phpUtils.fixSerialization);
 
-	gulp.task('sql', function(cb) {
+	gulp.task('build:sql', function(cb) {
 		const deployEnv = cfgUtils.getEnv('deploy');
 		const devEnv = cfgUtils.getEnv('dev');
 		const prefix = deployEnv.mysql.prefix;
@@ -85,8 +88,27 @@ module.exports = function(gulp, pathConfig) {
 			.pipe(gulp.dest(pathConfig.dist));
 	});
 
+	gulp.task('build:commit', function(cb) {
+		const dir = process.cwd();
+		process.chdir(pathConfig.dist);
+		exec('git add *', next(function() {
+			console.log('Add successful.');
+			exec('git commit --allow-empty -m "cool"', next(function() {
+				console.log('Commit successful.');
+				process.chdir(dir);
+				cb();
+			}));
+		}));
+	});
+
 	gulp.task('build', function() {
-		runSequence(['resources', 'htaccess', 'wp-config', 'deploy-config', 'sql']);
+		runSequence('build:init', [
+			'build:resources',
+			'build:htaccess',
+			'build:wp-config',
+			'build:deploy-config',
+			'build:sql'
+		], 'build:commit');
 	});
 
 	gulp.task('rebuild', function() {

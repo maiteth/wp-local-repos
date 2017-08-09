@@ -1,14 +1,4 @@
 const gulp = require('gulp');
-const ejs = require('gulp-ejs');
-const replace = require('gulp-replace');
-const rename = require('gulp-rename');
-const runSequence = require('run-sequence');
-const rp = require('request-promise');
-const gutil = require('gulp-util');
-const ftp = require('gulp-ftp');
-const zip = require('gulp-zip');
-const phpUtils = require('./lib/phpUtils.js');
-const cfgUtils = require('./lib/utils.js');
 
 gulp.task('default', ['config']);
 

@@ -79,6 +79,19 @@ $table_prefix  = '<%= prefix %>';
  */
 define('WP_DEBUG', false);
 
+
+// CUSTOM (to be removed in prod)
+// Enable WP_DEBUG mode
+define( 'WP_DEBUG', true );
+
+// Enable Debug logging to the /wp-content/debug.log file
+define( 'WP_DEBUG_LOG', true );
+
+
+@ini_set( 'error_log', './wp-content/debug.log' );
+
+// CUSTOM END
+
 /* That's all, stop editing! Happy blogging. */
 
 /** Absolute path to the WordPress directory. */

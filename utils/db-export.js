@@ -30,8 +30,8 @@ exec(`mysqldump -u ${user} --password=${password} -h ${hostname} ${database} -r 
         files: 'sql/wordpress.sql',
 
         //Replacement to make (string or regex) 
-        from: [/\),\(/g, new RegExp(url, 'g'), /^\(3,'blogname','.*','yes'\),$/mg],
-        to: ['),\n(', '<%= url %>', "(3,'blogname','<%= blogname %>','yes'),"],
+        from: [/\),\(/g, new RegExp(url, 'g'), /^\(3,'blogname','.*','yes'\),$/mg, new RegExp(`theme_mods_${database}`)],
+        to: ['),\n(', '<%= url %>', "(3,'blogname','<%= blogname %>','yes'),", 'theme_mods_<%= database %>'],
     };
     replace(options)
         .then(changedFiles => {

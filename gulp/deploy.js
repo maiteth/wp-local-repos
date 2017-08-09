@@ -1,42 +1,70 @@
 const cfgUtils = require('../lib/utils.js');
-const ftp = require('gulp-ftp');
-const gutil = require('gulp-util');
 const runSequence = require('run-sequence');
-const rp = require('request-promise');
-const zip = require('gulp-zip');
+const spawn = require('child_process').spawn;
+const deployEnv = cfgUtils.getEnv('deploy');
 
-module.exports = function(gulp, path) {
-	gulp.task('deploy:zip', function(callback) {
-		return gulp.src(path.zipSrc, {
-				base: 'dist'
-			})
-			.pipe(zip(path.zip))
-			.pipe(gulp.dest('.'));
+module.exports = function(gulp, pathConfig) {
+
+	function init() {
+		const init = spawn('git', [
+			'ftp',
+			'init',
+			'-u',
+			deployEnv.ftp.user,
+			'-p', deployEnv.ftp.pass,
+			`${deployEnv.ftp.host}/${deployEnv.ftp.remotePath}`
+		], { cwd: pathConfig.dist });
+		init.stdout.on('data', (data) => {
+			console.log(`stdout: ${data}`);
+		});
+
+		init.stderr.on('data', (data) => {
+			console.log(`stderr: ${data}`);
+		});
+		init.on('close', (code) => {
+			console.log(`git init exited with code ${code}`);
+		});
+
+		init.on('error', (err) => {
+			console.log('init failed.', err);
+		});
+	}
+
+	gulp.task('deploy:push', function(cb) {
+
+		const push = spawn('git', [
+			'ftp',
+			'push',
+			'-u',
+			deployEnv.ftp.user,
+			'-p', deployEnv.ftp.pass,
+			`${deployEnv.ftp.host}/${deployEnv.ftp.remotePath}`
+		], { cwd: pathConfig.dist });
+
+		push.stdout.on('data', (data) => {
+			console.log(`stdout: ${data}`);
+		});
+
+		push.stderr.on('data', (data) => {
+			console.log(`stderr: ${data}`);
+		});
+
+		push.on('error', (err) => {
+			console.log('push failed.');
+
+			init();
+		});
+
+		push.on('close', (code) => {
+			console.log(`git push exited with code ${code}`);
+			if (code > 0) {
+				console.log('code > 0 : ', code);
+				init();
+			}
+		});
 	});
 
-	gulp.task('deploy:ftp', function() {
-		const deployEnv = cfgUtils.getEnv('deploy');
-		console.log('env', deployEnv);
-		console.log('env.ftp', deployEnv.ftp);
-		return gulp.src(path.ftp)
-			.pipe(ftp(deployEnv.ftp))
-			.pipe(gutil.noop());
-	});
-
-	gulp.task('deploy:unzip', function(callback) {
-		const deployEnv = cfgUtils.getEnv('deploy');
-		rp(deployEnv.url + '/deploy.php')
-			.then(function(htmlString) {
-				console.log('htmlString', htmlString);
-				callback();
-			})
-			.catch(function(err) {
-				console.log('error', err);
-				throw err;
-			});
-	});
-
-	gulp.task('deploy', ['clean:zip'], function() {
-		runSequence('deploy:zip', 'deploy:ftp', 'deploy:unzip');
+	gulp.task('deploy', function() {
+		runSequence('deploy:push');
 	});
 };

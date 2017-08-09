@@ -26,13 +26,11 @@ module.exports = function(gulp, pathConfig) {
 
 	gulp.task('build:init', function(cb) {
 		mkdirp.sync(pathConfig.dist);
-		const dir = process.cwd();
-		process.chdir(pathConfig.dist);
-		exec('git init', next(function() {
-			console.log('Init successful.');
-			process.chdir(dir);
-			cb();
-		}));
+		exec('git init', { cwd: pathConfig.dist },
+			next(function() {
+				console.log('Init successful.');
+				cb();
+			}));
 	});
 
 	gulp.task('build:resources', function() {
@@ -89,13 +87,10 @@ module.exports = function(gulp, pathConfig) {
 	});
 
 	gulp.task('build:commit', function(cb) {
-		const dir = process.cwd();
-		process.chdir(pathConfig.dist);
-		exec('git add *', next(function() {
+		exec('git add *', { cwd: pathConfig.dist }, next(function() {
 			console.log('Add successful.');
-			exec('git commit --allow-empty -m "cool"', next(function() {
+			exec('git commit --allow-empty -m "cool"', { cwd: pathConfig.dist }, next(function() {
 				console.log('Commit successful.');
-				process.chdir(dir);
 				cb();
 			}));
 		}));

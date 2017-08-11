@@ -13,12 +13,12 @@ module.exports = function(gulp, path) {
 			.pipe(gutil.noop());
 	});
 
-	gulp.task('undeploy:remove', function(callback) {
+	gulp.task('undeploy:remove', function(cb) {
 		const deployEnv = cfgUtils.getEnv('deploy');
 		rp(deployEnv.url + '/remove.php')
 			.then(function(htmlString) {
 				console.log('htmlString', htmlString);
-				callback();
+				cb();
 			})
 			.catch(function(err) {
 				console.log('error', err);

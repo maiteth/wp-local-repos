@@ -49,10 +49,6 @@ module.exports = function(gulp, pathConfig) {
 
 		push.on('error', (err) => {
 			console.log('push failed.');
-<<<<<<< HEAD
-=======
-
->>>>>>> 59d965ae1763b8590a5b14c62b1f3fa2cb1e17ee
 			init();
 		});
 
@@ -62,7 +58,6 @@ module.exports = function(gulp, pathConfig) {
 				console.log('code > 0 : ', code);
 				init();
 			}
-<<<<<<< HEAD
 			cb();
 		});
 	});
@@ -70,12 +65,5 @@ module.exports = function(gulp, pathConfig) {
 	gulp.task('deploy', function(cb) {
 		runSequence('deploy:push', 'deploy-db');
 		cb();
-=======
-		});
-	});
-
-	gulp.task('deploy', function() {
-		runSequence('deploy:push');
->>>>>>> 59d965ae1763b8590a5b14c62b1f3fa2cb1e17ee
 	});
 };

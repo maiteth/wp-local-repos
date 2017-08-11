@@ -14,7 +14,7 @@ const pathConfig = {
 	deployConfig: ['cfg/deploy-config.php.tmpl'],
 	sql: ['sql/wordpress.sql'],
 	resources: ['app/**/*', 'app/**/.*', '!app/.htaccess', '!app/wp-config.php'],
-	ftp: ['dist.zip', 'lib/deploy/deploy.php'],
+	ftp: [`../${repositoryName}-dist/deploy-config.php`, 'lib/deploy/deploy.php'],
 	undeploy: 'lib/deploy/remove.php',
 };
 
@@ -22,4 +22,5 @@ require('./gulp/clean.js')(gulp, pathConfig);
 require('./gulp/config.js')(gulp, pathConfig);
 require('./gulp/build.js')(gulp, pathConfig);
 require('./gulp/deploy.js')(gulp, pathConfig);
+require('./gulp/deploy-db.js')(gulp, pathConfig);
 require('./gulp/undeploy.js')(gulp, pathConfig);

@@ -77,6 +77,10 @@ Done !
 
 You can check your production.
 
+## Undeploy 
+
+If you need to undeploy, just run `gulp undeploy`.
+
 # Development
 
 ## File system
@@ -87,10 +91,6 @@ Edit all the file you want in the `app` directory.
 
 To export your database, run `npm run db-export`.
 To import your database, run `npm run db-import`.
-
-### Note 
-
-If you need to undeploy, just run `gulp undeploy`.
 
 
 # Authors

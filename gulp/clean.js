@@ -1,5 +1,3 @@
-const del = require('del');
-
 module.exports = function (gulp, path) {
 	// Delete the dist directory
 	gulp.task('clean:dist', function (cb) {

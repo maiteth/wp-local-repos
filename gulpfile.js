@@ -16,6 +16,7 @@ const pathConfig = {
 	resources: ['app/**/*', 'app/**/.*', '!app/.htaccess', '!app/wp-config.php'],
 	ftp: [`../${repositoryName}-dist/deploy-config.php`, 'lib/deploy/deploy.php'],
 	undeploy: 'lib/deploy/remove.php',
+	extractRemoteDb: 'lib/extract/extract-db.php',
 };
 
 require('./gulp/clean.js')(gulp, pathConfig);

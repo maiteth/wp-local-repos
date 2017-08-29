@@ -9,7 +9,7 @@ module.exports = function(gulp, pathConfig) {
 	gulp.task('deploy-db:ftp', function() {
 		console.log('env', deployEnv);
 		console.log('env.ftp', deployEnv.ftp);
-		return gulp.src(pathConfig.extractRemoteDb)
+		return gulp.src(pathConfig.ftp)
 			.pipe(ftp(deployEnv.ftp))
 			.pipe(gutil.noop());
 	});
